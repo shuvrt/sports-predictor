@@ -1,29 +1,40 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template
+import requests
+import datetime
 
 app = Flask(__name__)
 
-@app.route("/", methods=["GET","POST"])
+def get_today_games():
+
+    today = datetime.date.today()
+
+    url = f"https://api.balldontlie.io/v1/games?dates[]={today}"
+
+    response = requests.get(url)
+
+    data = response.json()
+
+    games = []
+
+    for game in data["data"]:
+
+        games.append({
+            "home": game["home_team"]["full_name"],
+            "away": game["visitor_team"]["full_name"],
+            "home_score": game["home_team_score"],
+            "away_score": game["visitor_team_score"]
+        })
+
+    return games
+
+
+@app.route("/")
 def index():
-    
-    score_local = None
-    score_visit = None
-    
-    if request.method == "POST":
-        
-        last3_local = float(request.form["last3_local"])
-        home_local = float(request.form["home_local"])
-        year_local = float(request.form["year_local"])
-        off_local = float(request.form["off_local"])
-        
-        last3_visit = float(request.form["last3_visit"])
-        away_visit = float(request.form["away_visit"])
-        year_visit = float(request.form["year_visit"])
-        off_visit = float(request.form["off_visit"])
-        
-        score_local = (last3_local + home_local + year_local + off_local) / 4
-        score_visit = (last3_visit + away_visit + year_visit + off_visit) / 4
-    
-    return render_template("index.html",score_local=score_local,score_visit=score_visit)
+
+    games = get_today_games()
+
+    return render_template("index.html", games=games)
+
 
 if __name__ == "__main__":
     app.run()
