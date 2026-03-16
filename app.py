@@ -7,8 +7,9 @@ app = Flask(__name__)
 def get_today_games():
 
     today = datetime.date.today()
+    yesterday = today - datetime.timedelta(days=1)
 
-    url = f"https://api.balldontlie.io/v1/games?start_date={today}&end_date={today}"
+    url = f"https://api.balldontlie.io/v1/games?start_date={yesterday}&end_date={today}"
 
     response = requests.get(url)
 
