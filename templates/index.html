@@ -1,1 +1,13 @@
+<h1>NBA Games Today</h1>
 
+{% for game in games %}
+
+<p>
+{{game.away}} vs {{game.home}}
+<br>
+Score: {{game.away_score}} - {{game.home_score}}
+</p>
+
+<hr>
+
+{% endfor %}
