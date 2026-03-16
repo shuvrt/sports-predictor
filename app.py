@@ -6,12 +6,13 @@ app = Flask(__name__)
 
 def get_today_games():
 
-    today = datetime.date.today()
-    yesterday = today - datetime.timedelta(days=1)
+    url = "https://api.balldontlie.io/v1/games?per_page=10"
 
-    url = f"https://api.balldontlie.io/v1/games?start_date={yesterday}&end_date={today}"
+    headers = {
+        "Authorization": "Bearer 8ae9a654-874d-4d4b-8b79-396d21bc0759"
+    }
 
-    response = requests.get(url)
+    response = requests.get(url, headers=headers)
 
     data = response.json()
 
