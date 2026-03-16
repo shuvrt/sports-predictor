@@ -8,7 +8,7 @@ def get_today_games():
 
     today = datetime.date.today()
 
-    url = f"https://api.balldontlie.io/v1/games?dates[]={today}"
+    url = f"https://api.balldontlie.io/v1/games?start_date={today}&end_date={today}"
 
     response = requests.get(url)
 
