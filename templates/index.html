@@ -1,5 +1,9 @@
 <h1>NBA Games Today</h1>
 
+{% if games|length == 0 %}
+<p>No games today.</p>
+{% endif %}
+
 {% for game in games %}
 
 <p>
